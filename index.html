@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="无畏契约（Valorant）随机英雄角色与枪械选择转盘工具，支持最新英雄与武器">
+  <title>无畏契约随机选择器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header" id="header">
+    <h1>无畏契约随机选择器</h1>
+    <p>VALORANT RANDOM PICKER</p>
+  </header>
+
+  <main class="main">
+    <div class="controls">
+      <button class="btn-spin" id="btnSpinAll">一键抽取</button>
+    </div>
+
+    <div class="result-section" id="resultSection">
+      <span class="result-label">随机组合</span>
+      <p class="result-text" id="resultText">点击上方按钮开始</p>
+    </div>
+
+    <div class="wheels" id="wheels">
+      <!-- 角色转盘 -->
+      <section class="wheel-section">
+        <h2>角色 <span class="badge" id="agentCount"></span></h2>
+        <div class="wheel-wrapper" id="agentWheelBox">
+          <div class="pointer"></div>
+          <div class="wheel-rotator" id="agentRotator">
+            <canvas id="agentCanvas"></canvas>
+          </div>
+        </div>
+        <div class="wheel-footer">
+          <button class="btn-single" id="btnSpinAgent">旋转角色</button>
+          <span class="wheel-result" id="agentResult">—</span>
+        </div>
+      </section>
+
+      <!-- 枪械转盘 -->
+      <section class="wheel-section">
+        <h2>枪械 <span class="badge" id="weaponCount"></span></h2>
+        <div class="wheel-wrapper" id="weaponWheelBox">
+          <div class="pointer"></div>
+          <div class="wheel-rotator" id="weaponRotator">
+            <canvas id="weaponCanvas"></canvas>
+          </div>
+        </div>
+        <div class="wheel-footer">
+          <button class="btn-single" id="btnSpinWeapon">旋转枪械</button>
+          <span class="wheel-result" id="weaponResult">—</span>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>数据更新至 Episode 10 · 含追猎(Outlaw)</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
