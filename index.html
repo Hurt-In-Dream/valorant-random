@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="无畏契约（Valorant）随机英雄角色与枪械选择转盘工具，支持最新英雄与武器">
+  <meta name="description" content="无畏契约（Valorant）随机英雄角色与枪械选择转盘工具">
   <title>无畏契约随机选择器</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -17,25 +18,54 @@
   <header class="header">
     <h1>无畏契约随机选择器</h1>
     <p>VALORANT RANDOM PICKER</p>
+    <a class="github-link" href="https://github.com/Hurt-In-Dream/valorant-random" target="_blank" rel="noopener"
+      title="GitHub">
+      <svg viewBox="0 0 16 16" fill="currentColor">
+        <path
+          d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+      </svg>
+    </a>
   </header>
 
   <main class="main">
     <div class="controls">
       <button class="btn-spin" id="btnSpinAll">一键抽取</button>
-      <label class="checkbox-wrap" id="sidearmToggle">
-        <input type="checkbox" id="includeSidearm" checked>
-        <span class="checkmark"></span>
-        <span class="checkbox-text">包含手枪</span>
-      </label>
+
+      <div class="checkbox-group">
+        <label class="checkbox-wrap">
+          <input type="checkbox" id="includeAgent" checked>
+          <span class="checkmark"></span>
+          <span class="checkbox-text">角色</span>
+        </label>
+        <label class="checkbox-wrap">
+          <input type="checkbox" id="includeSidearm" checked>
+          <span class="checkmark"></span>
+          <span class="checkbox-text">手枪</span>
+        </label>
+        <label class="checkbox-wrap">
+          <input type="checkbox" id="includePrimary" checked>
+          <span class="checkmark"></span>
+          <span class="checkbox-text">长枪</span>
+        </label>
+      </div>
+
+      <div class="duration-control">
+        <span class="duration-label">时长</span>
+        <select id="spinDuration" class="duration-select">
+          <option value="1">1s</option>
+          <option value="2">2s</option>
+          <option value="3" selected>3s</option>
+          <option value="5">5s</option>
+        </select>
+      </div>
     </div>
 
-    <div class="result-section" id="resultSection">
+    <div class="result-section">
       <span class="result-label">随机组合</span>
       <p class="result-text" id="resultText">点击上方按钮开始</p>
     </div>
 
-    <div class="wheels" id="wheels">
-      <!-- 角色转盘 -->
+    <div class="wheels">
       <section class="wheel-section">
         <h2>角色 <span class="badge" id="agentCount"></span></h2>
         <div class="wheel-wrapper">
@@ -50,8 +80,7 @@
         </div>
       </section>
 
-      <!-- 手枪转盘 -->
-      <section class="wheel-section" id="sidearmSection">
+      <section class="wheel-section">
         <h2>手枪 <span class="badge" id="sidearmCount"></span></h2>
         <div class="wheel-wrapper">
           <div class="pointer"></div>
@@ -65,7 +94,6 @@
         </div>
       </section>
 
-      <!-- 长枪转盘 -->
       <section class="wheel-section">
         <h2>长枪 <span class="badge" id="primaryCount"></span></h2>
         <div class="wheel-wrapper">
@@ -80,10 +108,30 @@
         </div>
       </section>
     </div>
+
+    <!-- 历史记录 -->
+    <section class="history-section">
+      <h2>历史记录 <span class="badge" id="historyCount">0</span></h2>
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>角色</th>
+              <th>手枪</th>
+              <th>长枪</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+      <p class="history-empty" id="historyEmpty">暂无记录</p>
+    </section>
   </main>
 
   <footer class="footer">
-    <p>数据更新至12.03版本</p>
+    <span class="footer-version">数据更新至12.03版本</span>
+    <span class="footer-credit">By. 夢中有傷</span>
   </footer>
 
   <script src="script.js"></script>
