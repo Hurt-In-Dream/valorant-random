@@ -12,7 +12,7 @@
 </head>
 <body>
 
-  <header class="header" id="header">
+  <header class="header">
     <h1>无畏契约随机选择器</h1>
     <p>VALORANT RANDOM PICKER</p>
   </header>
@@ -31,7 +31,7 @@
       <!-- 角色转盘 -->
       <section class="wheel-section">
         <h2>角色 <span class="badge" id="agentCount"></span></h2>
-        <div class="wheel-wrapper" id="agentWheelBox">
+        <div class="wheel-wrapper">
           <div class="pointer"></div>
           <div class="wheel-rotator" id="agentRotator">
             <canvas id="agentCanvas"></canvas>
@@ -43,18 +43,33 @@
         </div>
       </section>
 
-      <!-- 枪械转盘 -->
+      <!-- 手枪转盘 -->
       <section class="wheel-section">
-        <h2>枪械 <span class="badge" id="weaponCount"></span></h2>
-        <div class="wheel-wrapper" id="weaponWheelBox">
+        <h2>手枪 <span class="badge" id="sidearmCount"></span></h2>
+        <div class="wheel-wrapper">
           <div class="pointer"></div>
-          <div class="wheel-rotator" id="weaponRotator">
-            <canvas id="weaponCanvas"></canvas>
+          <div class="wheel-rotator" id="sidearmRotator">
+            <canvas id="sidearmCanvas"></canvas>
           </div>
         </div>
         <div class="wheel-footer">
-          <button class="btn-single" id="btnSpinWeapon">旋转枪械</button>
-          <span class="wheel-result" id="weaponResult">—</span>
+          <button class="btn-single" id="btnSpinSidearm">旋转手枪</button>
+          <span class="wheel-result" id="sidearmResult">—</span>
+        </div>
+      </section>
+
+      <!-- 长枪转盘 -->
+      <section class="wheel-section">
+        <h2>长枪 <span class="badge" id="primaryCount"></span></h2>
+        <div class="wheel-wrapper">
+          <div class="pointer"></div>
+          <div class="wheel-rotator" id="primaryRotator">
+            <canvas id="primaryCanvas"></canvas>
+          </div>
+        </div>
+        <div class="wheel-footer">
+          <button class="btn-single" id="btnSpinPrimary">旋转长枪</button>
+          <span class="wheel-result" id="primaryResult">—</span>
         </div>
       </section>
     </div>
