@@ -94,7 +94,7 @@ function drawWheel(canvas, items) {
     ctx.translate(cx, cy);
     ctx.rotate(textAngle);
     ctx.fillStyle = '#d4d4d4';
-    ctx.font = `500 ${fontSize}px Inter, -apple-system, sans-serif`;
+    ctx.font = `500 ${fontSize}px LXGW WenKai, -apple-system, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(items[i], textR, 0);
