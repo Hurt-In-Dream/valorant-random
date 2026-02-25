@@ -6,18 +6,18 @@ const agents = [
   '钢锁', '壹决', '暮蝶', '维斯', '钛狐', '幻棱', '禁灭'
 ];
 
-// 手枪 (Sidearms)
+// 手枪 (Sidearms) — 含追猎
 const sidearms = [
-  '标配', '短炮', '狂怒', '鬼魅', '正义'
+  '标配', '短炮', '狂怒', '鬼魅', '正义', '追猎'
 ];
 
 // 长枪 (Primary weapons)
 const primaries = [
-  '蜂刺', '骇灵',             // 冲锋枪
-  '雄鹿', '判官',             // 霰弹枪
-  '獠犬', '戍卫', '幻影', '飞将', // 步枪
-  '莽侠', '追猎', '冥驹',       // 狙击枪
-  '狂徒', '战神', '奥丁'        // 机枪
+  '蜂刺', '骇灵',                     // 冲锋枪
+  '雄鹿', '判官',                     // 霰弹枪
+  '獠犬', '戍卫', '幻影', '飞将',       // 步枪
+  '莽侠', '冥驹',                     // 狙击枪
+  '狂徒', '战神', '奥丁'               // 机枪
 ];
 
 // ===== 状态 =====
@@ -39,6 +39,7 @@ const els = {
   btnAgent: $('btnSpinAgent'),
   btnSidearm: $('btnSpinSidearm'),
   btnPrimary: $('btnSpinPrimary'),
+  includeSidearm: $('includeSidearm'),
   agentRotator: $('agentRotator'),
   sidearmRotator: $('sidearmRotator'),
   primaryRotator: $('primaryRotator'),
@@ -68,18 +69,15 @@ function drawWheel(canvas, items) {
   const radius = cx - 4;
   const n = items.length;
   const slice = (2 * Math.PI) / n;
-  const startOffset = -Math.PI / 2; // 12 点钟方向
+  const startOffset = -Math.PI / 2;
 
-  // 动态字号：项目越多字越小
   const fontSize = Math.max(10, Math.min(15, Math.floor(CANVAS_SIZE / n * 0.9)));
-
   const colors = ['#1a1a1a', '#212121'];
 
   for (let i = 0; i < n; i++) {
     const a1 = startOffset + i * slice;
     const a2 = startOffset + (i + 1) * slice;
 
-    // 扇区
     ctx.beginPath();
     ctx.moveTo(cx, cy);
     ctx.arc(cx, cy, radius, a1, a2);
@@ -90,7 +88,6 @@ function drawWheel(canvas, items) {
     ctx.lineWidth = 0.5;
     ctx.stroke();
 
-    // 文字
     const textAngle = a1 + slice / 2;
     const textR = radius * 0.68;
     ctx.save();
@@ -104,7 +101,6 @@ function drawWheel(canvas, items) {
     ctx.restore();
   }
 
-  // 中心圆
   ctx.beginPath();
   ctx.arc(cx, cy, 16, 0, Math.PI * 2);
   ctx.fillStyle = '#0e0e0e';
@@ -114,18 +110,13 @@ function drawWheel(canvas, items) {
   ctx.stroke();
 }
 
-// ===== 旋转逻辑（已修复角度计算） =====
+// ===== 旋转逻辑 =====
 function spinWheel(rotatorEl, items, currentRotation) {
   const n = items.length;
   const sliceAngle = 360 / n;
   const targetIndex = Math.floor(Math.random() * n);
 
-  // 段中心角度（从顶部顺时针计）
   const targetCenter = targetIndex * sliceAngle + sliceAngle / 2;
-
-  // 要让该段转到顶部指针处，总旋转量 mod 360 应等于 (360 - targetCenter)
-  // 因为顺时针旋转 θ 后，原本在 θ 处的段会移走，
-  // 而原本在 (360 - θ) 处的段会移到顶部
   const targetMod = ((360 - targetCenter) % 360 + 360) % 360;
   const currentMod = ((currentRotation % 360) + 360) % 360;
 
@@ -133,7 +124,6 @@ function spinWheel(rotatorEl, items, currentRotation) {
   if (remaining <= 0) remaining += 360;
 
   const spins = MIN_SPINS + Math.floor(Math.random() * (MAX_SPINS - MIN_SPINS + 1));
-  // 段内随机偏移 ±30%，确保不越界
   const jitter = (Math.random() - 0.5) * sliceAngle * 0.6;
 
   const newRotation = currentRotation + remaining + spins * 360 + jitter;
@@ -152,15 +142,13 @@ function setButtonsDisabled(disabled) {
 
 // ===== 结果更新 =====
 function updateCombinedResult(agent, sidearm, primary) {
-  if (agent && sidearm && primary) {
-    els.resultText.innerHTML =
-      `<span class="hl">${agent}</span>` +
-      `<span class="sep">·</span>` +
-      `<span class="hl">${sidearm}</span>` +
-      `<span class="sep">+</span>` +
-      `<span class="hl">${primary}</span>`;
-    els.resultText.className = 'result-text active';
+  let html = `<span class="hl">${agent}</span>`;
+  if (sidearm) {
+    html += `<span class="sep">·</span><span class="hl">${sidearm}</span>`;
   }
+  html += `<span class="sep">+</span><span class="hl">${primary}</span>`;
+  els.resultText.innerHTML = html;
+  els.resultText.className = 'result-text active';
 }
 
 // ===== 单独旋转 =====
@@ -212,23 +200,37 @@ function spinAll() {
   spinning = true;
   setButtonsDisabled(true);
 
-  const aResult = spinWheel(els.agentRotator, agents, agentRotation);
-  const sResult = spinWheel(els.sidearmRotator, sidearms, sidearmRotation);
-  const pResult = spinWheel(els.primaryRotator, primaries, primaryRotation);
+  const withSidearm = els.includeSidearm.checked;
 
+  const aResult = spinWheel(els.agentRotator, agents, agentRotation);
   agentRotation = aResult.rotation;
-  sidearmRotation = sResult.rotation;
+
+  let sResult = null;
+  if (withSidearm) {
+    sResult = spinWheel(els.sidearmRotator, sidearms, sidearmRotation);
+    sidearmRotation = sResult.rotation;
+  }
+
+  const pResult = spinWheel(els.primaryRotator, primaries, primaryRotation);
   primaryRotation = pResult.rotation;
 
   setTimeout(() => {
     els.agentResult.textContent = aResult.selected;
     els.agentResult.className = 'wheel-result active';
-    els.sidearmResult.textContent = sResult.selected;
-    els.sidearmResult.className = 'wheel-result active';
+
+    if (sResult) {
+      els.sidearmResult.textContent = sResult.selected;
+      els.sidearmResult.className = 'wheel-result active';
+    }
+
     els.primaryResult.textContent = pResult.selected;
     els.primaryResult.className = 'wheel-result active';
 
-    updateCombinedResult(aResult.selected, sResult.selected, pResult.selected);
+    updateCombinedResult(
+      aResult.selected,
+      sResult ? sResult.selected : null,
+      pResult.selected
+    );
     spinning = false;
     setButtonsDisabled(false);
   }, SPIN_DURATION + 100);

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+  <div class="bg-overlay"></div>
 
   <header class="header">
     <h1>无畏契约随机选择器</h1>
@@ -20,6 +24,11 @@
   <main class="main">
     <div class="controls">
       <button class="btn-spin" id="btnSpinAll">一键抽取</button>
+      <label class="checkbox-wrap" id="sidearmToggle">
+        <input type="checkbox" id="includeSidearm" checked>
+        <span class="checkmark"></span>
+        <span class="checkbox-text">包含手枪</span>
+      </label>
     </div>
 
     <div class="result-section" id="resultSection">
@@ -44,7 +53,7 @@
       </section>
 
       <!-- 手枪转盘 -->
-      <section class="wheel-section">
+      <section class="wheel-section" id="sidearmSection">
         <h2>手枪 <span class="badge" id="sidearmCount"></span></h2>
         <div class="wheel-wrapper">
           <div class="pointer"></div>
@@ -76,9 +85,10 @@
   </main>
 
   <footer class="footer">
-    <p>数据更新至 Episode 10 · 含追猎(Outlaw)</p>
+    <p>数据更新至12.03版本</p>
   </footer>
 
   <script src="script.js"></script>
 </body>
+
 </html>

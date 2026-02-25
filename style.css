@@ -1,5 +1,7 @@
 /* ===== Reset & Base ===== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -7,8 +9,8 @@
 
 :root {
   --bg: #0e0e0e;
-  --surface: #151515;
-  --border: #262626;
+  --surface: rgba(21, 21, 21, 0.88);
+  --border: rgba(38, 38, 38, 0.9);
   --border-light: #333;
   --text: #e5e5e5;
   --text-muted: #737373;
@@ -26,12 +28,34 @@ html {
 body {
   font-family: var(--font);
   background-color: var(--bg);
+  background-image: url('http://pic.wzkws116.xyz/pic?img=ua');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--text);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* 暗色遮罩 */
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 所有内容在遮罩之上 */
+.header,
+.main,
+.footer {
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== Header ===== */
@@ -73,7 +97,8 @@ body {
 /* ===== Controls ===== */
 .controls {
   display: flex;
-  gap: 8px;
+  gap: 12px;
+  align-items: center;
 }
 
 .btn-spin {
@@ -97,6 +122,55 @@ body {
 .btn-spin:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+}
+
+/* ===== Checkbox ===== */
+.checkbox-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-wrap input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border-light);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 150ms, background 150ms;
+  flex-shrink: 0;
+}
+
+.checkmark::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 1px;
+  opacity: 0;
+  transition: opacity 100ms;
+}
+
+.checkbox-wrap input:checked+.checkmark {
+  border-color: var(--accent);
+}
+
+.checkbox-wrap input:checked+.checkmark::after {
+  opacity: 1;
+}
+
+.checkbox-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 /* ===== Result ===== */
@@ -269,6 +343,7 @@ canvas {
   padding: 12px 16px;
   border-top: 1px solid var(--border);
   text-align: center;
+  background: var(--surface);
 }
 
 .footer p {
@@ -283,7 +358,6 @@ canvas {
     grid-template-columns: 1fr 1fr;
   }
 
-  /* 角色转盘整行居中 */
   .wheel-section:first-child {
     grid-column: 1 / -1;
     justify-self: center;
@@ -309,6 +383,11 @@ canvas {
   .wheel-rotator {
     width: 240px;
     height: 240px;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 8px;
   }
 
   .result-section {
